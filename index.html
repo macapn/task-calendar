@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   
-  <!-- FullCalendarのCSSとJSを読み込む -->
+  <!-- FullCalendarのCSSとJS -->
   <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
 
@@ -19,27 +19,34 @@
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       var calendarEl = document.getElementById('calendar');
+
       var calendar = new FullCalendar.Calendar(calendarEl, {
-        timeZone: 'local', // ブラウザのローカル時間
-        initialView: window.innerWidth < 768 ? 'listWeek' : 'dayGridMonth',
+        timeZone: 'local',
         locale: 'ja',
+        initialView: window.innerWidth < 768 ? 'listWeek' : 'dayGridMonth',
         headerToolbar: {
           left: 'prev,next today',
           center: 'title',
-          right: 'dayGridMonth,timeGridWeek,listWeek,listDay' // 時間軸も選択可
+          right: 'dayGridMonth,timeGridWeek,listWeek,listDay'
         },
         events: [
-          // 時間指定あり
-          { title: '経営学', start: '2025-10-05T23:59:00' },
-          { title: 'ゼミ', start: '2025-10-12T17:00:00' },
-          { title: '英語', start: '2025-10-20T21:00:00' }
+          { title: '経営学 23:59', start: '2025-10-05T23:59:00' },
+          { title: 'ゼミ 17:00', start: '2025-10-12T17:00:00' },
+          { title: '英語 21:00', start: '2025-10-20T21:00:00' }
         ],
-        eventTimeFormat: { // 表示形式をカスタマイズ
-          hour: '2-digit',
-          minute: '2-digit',
-          meridiem: false
+        eventDidMount: function(info) {
+          // 月表示の場合だけ青い点にする
+          if (calendar.view.type === 'dayGridMonth') {
+            info.el.style.backgroundColor = 'transparent';
+            info.el.style.border = 'none';
+            info.el.style.height = '0.5em';
+            info.el.style.width = '0.5em';
+            info.el.style.borderRadius = '50%';
+            info.el.style.margin = '0 auto';
+          }
         }
       });
+
       calendar.render();
     });
   </script>
