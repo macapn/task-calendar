@@ -10,6 +10,12 @@
   <style>
     body { font-family: sans-serif; margin: 20px; }
     #calendar { max-width: 900px; margin: auto; }
+
+    .fc-daygrid-event .fc-event-title {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   </style>
 </head>
 <body>
@@ -23,17 +29,33 @@
       var calendar = new FullCalendar.Calendar(calendarEl, {
         timeZone: 'local',
         locale: 'ja',
-        initialView: window.innerWidth < 768 ? 'listWeek' : 'dayGridMonth',
+        initialView: 'dayGridMonth',
         headerToolbar: {
           left: 'prev,next today',
           center: 'title',
-          right: 'dayGridMonth,timeGridWeek,listWeek,listDay'
+          right: 'dayGridMonth,listMonth,timeGridWeek,listWeek,listDay'
+        },
+        views: {
+          listMonth: {
+            type: 'list',
+            duration: { months: 1 },
+            buttonText: 'month list'
+          }
         },
         events: [
-          { title: '経営学 23:59', start: '2025-10-05T23:59:00', end: '2025-10-05T23:59:59' },
-          { title: 'ゼミ 17:00', start: '2025-10-12T17:00:00', end: '2025-10-12T17:00:59' },
-          { title: '英語 21:00', start: '2025-10-20T21:00:00', end: '2025-10-20T21:00:59' }
+          { title: '基礎ゼミ 23:59 第4回ジャーナル', start: '2025-10-07T23:59:00', end: '2025-10-07T23:59:59' },
+          { title: '社会教育入門 23:59 第3回リアクションペーパー', start: '2025-10-06T23:59:00', end: '2025-10-06T23:59:59' },
+          { title: '社会教育入門 23:59 第4回リアクションペーパー', start: '2025-10-06T23:59:00', end: '2025-10-06T23:59:59' },
+          { title: '教育社会学 23:59 第6回ジャーナル', start: '2025-10-04T23:59:00', end: '2025-10-04T23:59:59' },
+          { title: '教育社会学 23:59 第7回ジャーナル', start: '2025-10-04T23:59:00', end: '2025-10-04T23:59:59' },
+          { title: '教育社会学 23:59 第8回オンデマンド(もしかしたら18〆)', start: '2025-10-15T23:59:00', end: '2025-10-15T23:59:59' },
+          { title: '教育調査の基礎 15:00 第7回オンデマンド アンケート課題', start: '2025-10-06T15:00:00', end: '2025-10-06T15:00:00' },
+          { title: '教育調査の基礎 09:30 第7回オンデマンド その他課題', start: '2025-10-16T09:30:00', end: '2025-10-16T09:30:00' },
+          { title: '自己探求とキャリア形成Ⅰ 23:59 3Q・最終課題 身近な社会人インタビュー', start: '2025-10-20T23:59:00', end: '2025-10-20T23:59:59' },
         ],
+        eventDidMount: function(info) {
+          info.el.title = info.event.title;
+        },
         eventTimeFormat: {
           hour: '2-digit',
           minute: '2-digit',
