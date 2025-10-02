@@ -30,21 +30,34 @@
           right: 'dayGridMonth,timeGridWeek,listWeek,listDay'
         },
         events: [
-          { title: '経営学 23:59', start: '2025-10-05T23:59:00', display: 'auto' },
-          { title: 'ゼミ 17:00', start: '2025-10-12T17:00:00', display: 'auto' },
-          { title: '英語 21:00', start: '2025-10-20T21:00:00', display: 'auto' }
+          { title: '経営学 23:59', start: '2025-10-05T23:59:00' },
+          { title: 'ゼミ 17:00', start: '2025-10-12T17:00:00' },
+          { title: '英語 21:00', start: '2025-10-20T21:00:00' }
         ],
-        viewDidMount: function(viewInfo) {
-          // 月表示なら青い点のみ
-          if (viewInfo.view.type === 'dayGridMonth') {
-            calendar.getEvents().forEach(function(event) {
-              event.setProp('display', 'background');
-            });
+        eventDidMount: function(info) {
+          // 月表示の場合のみカスタム表示
+          if (calendar.view.type === 'dayGridMonth') {
+            // 高さと幅を小さくして丸くする
+            info.el.style.height = '0.8em';
+            info.el.style.width = '0.8em';
+            info.el.style.borderRadius = '50%';
+            info.el.style.backgroundColor = '#3788d8';
+            info.el.style.margin = '0 auto';
+            // タイトルや時刻を非表示に
+            const title = info.el.querySelector('.fc-event-title');
+            if(title) title.style.display = 'none';
+            const time = info.el.querySelector('.fc-time');
+            if(time) time.style.display = 'none';
           } else {
-            // 月以外は時間付きバーに戻す
-            calendar.getEvents().forEach(function(event) {
-              event.setProp('display', 'auto');
-            });
+            // 月表示以外では通常のバー表示
+            info.el.style.height = '';
+            info.el.style.width = '';
+            info.el.style.borderRadius = '';
+            info.el.style.backgroundColor = '';
+            const title = info.el.querySelector('.fc-event-title');
+            if(title) title.style.display = '';
+            const time = info.el.querySelector('.fc-time');
+            if(time) time.style.display = '';
           }
         },
         eventTimeFormat: {
