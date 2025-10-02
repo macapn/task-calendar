@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  
+  <!-- FullCalendarのCSSとJSを読み込む -->
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+
+  <style>
+    body { font-family: sans-serif; margin: 20px; }
+    #calendar { max-width: 900px; margin: auto; }
+  </style>
+</head>
+<body>
+  <h1>課題カレンダー</h1>
+  <div id="calendar"></div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var calendarEl = document.getElementById('calendar');
+      var calendar = new FullCalendar.Calendar(calendarEl, {
+        // 画面幅に応じて表示を変更（スマホはリスト表示）
+        initialView: window.innerWidth < 768 ? 'listWeek' : 'dayGridMonth',
+        locale: 'ja',
+        headerToolbar: {
+          left: 'prev,next today',
+          center: 'title',
+          right: 'dayGridMonth,listWeek,listDay' // 表示切替ボタン
+        },
+        events: [
+          { title: '経営学 23:59', start: '2025-10-05T23:59:00' },
+          { title: 'ゼミ 17:00', start: '2025-10-12T17:00:00' },
+          { title: '英語 21:00', start: '2025-10-20T21:00:00' }
+        ]
+      });
+      calendar.render();
+    });
+  </script>
+</body>
+</html>
