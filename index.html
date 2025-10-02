@@ -30,20 +30,27 @@
           right: 'dayGridMonth,timeGridWeek,listWeek,listDay'
         },
         events: [
-          { title: '経営学 23:59', start: '2025-10-05T23:59:00' },
-          { title: 'ゼミ 17:00', start: '2025-10-12T17:00:00' },
-          { title: '英語 21:00', start: '2025-10-20T21:00:00' }
+          { title: '経営学 23:59', start: '2025-10-05T23:59:00', display: 'auto' },
+          { title: 'ゼミ 17:00', start: '2025-10-12T17:00:00', display: 'auto' },
+          { title: '英語 21:00', start: '2025-10-20T21:00:00', display: 'auto' }
         ],
-        eventDidMount: function(info) {
-          // 月表示の場合だけ青い点にする
-          if (calendar.view.type === 'dayGridMonth') {
-            info.el.style.backgroundColor = 'transparent';
-            info.el.style.border = 'none';
-            info.el.style.height = '0.5em';
-            info.el.style.width = '0.5em';
-            info.el.style.borderRadius = '50%';
-            info.el.style.margin = '0 auto';
+        viewDidMount: function(viewInfo) {
+          // 月表示なら青い点のみ
+          if (viewInfo.view.type === 'dayGridMonth') {
+            calendar.getEvents().forEach(function(event) {
+              event.setProp('display', 'background');
+            });
+          } else {
+            // 月以外は時間付きバーに戻す
+            calendar.getEvents().forEach(function(event) {
+              event.setProp('display', 'auto');
+            });
           }
+        },
+        eventTimeFormat: {
+          hour: '2-digit',
+          minute: '2-digit',
+          meridiem: false
         }
       });
 
