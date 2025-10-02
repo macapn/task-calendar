@@ -16,15 +16,54 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
+
+    /* モーダル風スタイル */
+    #eventModal {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: #fff;
+      border-top: 1px solid #ccc;
+      box-shadow: 0 -3px 10px rgba(0,0,0,0.2);
+      padding: 15px;
+      font-size: 16px;
+      z-index: 1000;
+    }
+
+    #eventModalClose {
+      float: right;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    @media(min-width: 768px) {
+      /* PCではモーダル非表示 */
+      #eventModal { display: none !important; }
+    }
   </style>
 </head>
 <body>
   <h1>課題カレンダー</h1>
   <div id="calendar"></div>
 
+  <!-- モーダル -->
+  <div id="eventModal">
+    <span id="eventModalClose">✕</span>
+    <div id="eventModalContent"></div>
+  </div>
+
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       var calendarEl = document.getElementById('calendar');
+      var modal = document.getElementById('eventModal');
+      var modalContent = document.getElementById('eventModalContent');
+      var modalClose = document.getElementById('eventModalClose');
+
+      modalClose.addEventListener('click', function() {
+        modal.style.display = 'none';
+      });
 
       var calendar = new FullCalendar.Calendar(calendarEl, {
         timeZone: 'local',
@@ -51,13 +90,15 @@
           { title: '教育社会学 23:59 第8回オンデマンド(もしかしたら18〆)', start: '2025-10-15T23:59:00', end: '2025-10-15T23:59:59' },
           { title: '教育調査の基礎 15:00 第7回オンデマンド アンケート課題', start: '2025-10-06T15:00:00', end: '2025-10-06T15:00:00' },
           { title: '教育調査の基礎 09:30 第7回オンデマンド その他課題', start: '2025-10-16T09:30:00', end: '2025-10-16T09:30:00' },
-          { title: '自己探求とキャリア形成Ⅰ 23:59 3Q・最終課題 身近な社会人インタビュー', start: '2025-10-20T23:59:00', end: '2025-10-20T23:59:59' },
+          { title: '自己探求とキャリア形成Ⅰ 23:59 3Q・最終課題 身近な社会人インタビュー', start: '2025-10-20T23:59:00', end: '2025-10-20T23:59:59' }
         ],
         eventDidMount: function(info) {
-          info.el.title = info.event.title;
+          info.el.title = info.event.title; // PCはホバーでツールチップ
         },
         eventClick: function(info) {
-          alert(info.event.title);
+          // モーダル表示（スマホでの閲覧用）
+          modalContent.innerText = info.event.title;
+          modal.style.display = 'block';
         },
         eventTimeFormat: {
           hour: '2-digit',
