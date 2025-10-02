@@ -56,6 +56,9 @@
         eventDidMount: function(info) {
           info.el.title = info.event.title;
         },
+        eventClick: function(info) {
+          alert(info.event.title);
+        },
         eventTimeFormat: {
           hour: '2-digit',
           minute: '2-digit',
